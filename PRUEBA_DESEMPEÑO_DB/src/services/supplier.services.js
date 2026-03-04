@@ -7,7 +7,11 @@ export const getAllSuppliersService = async () => {
 
 export const createSupplierService = async (data) => {
   const { name, email } = data;
-  const query = `INSERT INTO juan_jose.supplier (supplier_name, supplier_email) VALUES ($1, $2) RETURNING *;`;
+  const query = `
+  INSERT INTO juan_jose.supplier (supplier_name, supplier_email) 
+  VALUES ($1, $2) 
+  RETURNING *;
+  `;
   const { rows } = await pool.query(query, [name, email]);
   return rows[0];
 };

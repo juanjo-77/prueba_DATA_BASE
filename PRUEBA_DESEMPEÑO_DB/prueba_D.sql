@@ -46,12 +46,13 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     -- Actualizamos id_customer en sale comparando el texto con el nombre en customer
-    UPDATE juan_jose.sale s
-    SET id_customer = c.id_customer::text
-    FROM juan_jose.customer c
-    WHERE s.id_customer = c.customer_name;
     
-    RAISE NOTICE 'Vinculación de clientes completada.';
+    UPDATE juan_jose.sale s   -- le pone un alias a jua_jose.sale
+    SET id_customer = c.id_customer::text  -- reemplaza el id por text
+    FROM juan_jose.customer c       --de customers 
+    WHERE s.id_customer = c.customer_name;   -- donde s = c
+    
+    RAISE NOTICE 'Vinculación de clientes completada.';   -- aparece mensaje en el onput
 END;
 $$;
 
@@ -66,7 +67,7 @@ CREATE OR REPLACE PROCEDURE juan_jose.limpiar_base_datos()
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    TRUNCATE juan_jose.sale, juan_jose.customer, juan_jose.product, juan_jose.supplier RESTART IDENTITY CASCADE;
+    TRUNCATE juan_jose.sale, juan_jose.customer, juan_jose.product, juan_jose.supplier RESTART IDENTITY CASCADE;  -- se eliminen tambien los IDs 
     RAISE NOTICE 'Todas las tablas han sido vaciadas y los contadores reiniciados.';
 END;
 $$;
@@ -79,26 +80,25 @@ $$;
 -- CALCULAR TOTAL DE VENTAS POR CLIENTE
 
 
-CREATE OR REPLACE PROCEDURE juan_jose.calcular_total_ventas_cliente(nombre_cli TEXT)
+CREATE OR REPLACE PROCEDURE juan_jose.calcular_total_ventas_producto(sku_param TEXT)
 LANGUAGE plpgsql
 AS $$
 DECLARE
     v_total DECIMAL(10,2);
 BEGIN
-    -- Sumamos el valor de todas las líneas de venta vinculadas al nombre del cliente
-    SELECT SUM(total_line_value) INTO v_total
+    SELECT SUM(s.total_line_value) INTO v_total
     FROM juan_jose.sale s
-    JOIN juan_jose.customer c ON s.id_customer = c.id_customer::text
-    WHERE c.customer_name = nombre_cli;
+    WHERE s.product_sku = sku_param;
 
     IF v_total IS NULL THEN
-        RAISE NOTICE 'El cliente % no tiene ventas registradas.', nombre_cli;
+        RAISE NOTICE 'El producto % no tiene ventas registradas.', sku_param;
     ELSE
-        RAISE NOTICE 'El total de ventas para el cliente % es: $ %', nombre_cli, v_total;
+        RAISE NOTICE 'El total de ventas para el producto % es: $ %', sku_param, v_total;
     END IF;
 END;
 $$;
 
+CALL juan_jose.calcular_total_ventas_producto('LPT-HP-001');
 --====================================================================================================
 
 --Busca el nombre, encuentra su ID y vincula automáticamente todas las ventas.
@@ -109,7 +109,7 @@ SELECT * FROM sale
 
 -- Busca el nombre, suma sus ventas y muestra el total gastado. 
 
-CALL juan_jose.calcular_total_ventas_cliente('Juan Perez');
+
 
 
 

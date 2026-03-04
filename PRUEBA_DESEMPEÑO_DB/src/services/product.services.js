@@ -5,7 +5,6 @@ export const getAllProductsService = async () => {
   return rows;
 };
 
-// Cambia tu consulta por esta más simple:
 export const createProductService = async (data) => {
   const { sku, name, price, category } = data;
   const query = `

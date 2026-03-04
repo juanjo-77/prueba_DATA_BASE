@@ -1,7 +1,7 @@
 import pkg from 'pg';
 import 'dotenv/config';
 
-const { Pool } = pkg;
+const { Pool } = pkg;  //grupo de conexiones reutilizables
 
 // Configuramos la conexión usando las variables de tu .env
 export const pool = new Pool({

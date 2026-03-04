@@ -2,7 +2,6 @@ import * as saleService from '../services/sale.services.js';
 
 export const postSale = async (req, res) => {
   try {
-    // req.body debe traer: customer_name, product_sku, quantity, total_line_value, purchase_date
     const newSale = await saleService.createSaleService(req.body);
     res.status(201).json({
       message: "Venta registrada con éxito",

@@ -1,5 +1,6 @@
 import { Router } from 'express';
-// Agrega las dos funciones nuevas aquí:
+
+// Importa todas las funciones
 import { 
     getCustomers, 
     postCustomer, 
@@ -7,6 +8,7 @@ import {
     deleteCustomer 
 } from '../controllers/customer.controller.js';
 
+// Aqui se guardan todas las rutas de customers
 const router = Router();
 
 router.get('/customers', getCustomers);

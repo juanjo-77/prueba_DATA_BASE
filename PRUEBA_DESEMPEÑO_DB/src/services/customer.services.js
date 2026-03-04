@@ -1,9 +1,13 @@
-import { pool } from '../config/pgconfig.js';
+
+
+import { pool } from '../config/pgconfig.js';   //conexion a postgres
 
 export const getAllCustomersService = async () => {
   const { rows } = await pool.query('SELECT * FROM juan_jose.customer');
   return rows;
 };
+
+
 
 //============================================================================================================
 
@@ -21,6 +25,8 @@ export const createCustomerService = async (data) => {
   return rows;
 };
 
+
+
 //============================================================================================================
 
 // UPDATE: Modifica un cliente usando su ID
@@ -33,13 +39,17 @@ export const updateCustomerService = async (id, data) => {
     RETURNING *;
   `;
   const { rows } = await pool.query(query, [name, email, address, phone, id]);
-  return rows[0];
+  
+  return rows[0];  // devuelve el cliente eliminado, sino undefined
 };
+
+
 //============================================================================================================
 
 // DELETE: Borra un cliente por su ID
 export const deleteCustomerService = async (id) => {
   const query = 'DELETE FROM juan_jose.customer WHERE id_customer = $1 RETURNING *;';
   const { rows } = await pool.query(query, [id]);
-  return rows[0];
+
+  return rows[0];// devuelve el cliente eliminado, sino undefined
 };
