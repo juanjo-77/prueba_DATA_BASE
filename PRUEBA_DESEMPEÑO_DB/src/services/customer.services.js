@@ -1,5 +1,4 @@
 
-
 import { pool } from '../config/pgconfig.js';   //conexion a postgres
 
 export const getAllCustomersService = async () => {

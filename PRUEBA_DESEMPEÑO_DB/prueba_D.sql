@@ -25,6 +25,7 @@ CREATE TABLE product (
 );
 
 
+
 DROP TABLE IF EXISTS sale CASCADE;
 
 CREATE TABLE sale (

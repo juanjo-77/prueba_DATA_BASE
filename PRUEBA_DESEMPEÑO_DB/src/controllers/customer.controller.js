@@ -1,4 +1,5 @@
 import * as customerService from '../services/customer.services.js';
+import { HttpError } from '../errors/HttpError.js';
 
 export const getCustomers = async (req, res) => {
   const data = await customerService.getAllCustomersService();
@@ -18,10 +19,10 @@ export const updateCustomer = async (req, res) => {
   const { id } = req.params; // Sacamos el ID de la URL
   try {
     const updated = await customerService.updateCustomerService(id, req.body);
-    if (!updated) return res.status(404).json({ message: "Cliente no encontrado" });
+    if (!updated) throw new HttpError ({ message: "Cliente no encontrado" });
     res.json({ message: "Cliente actualizado", data: updated });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(error.statusCode || 500).json({ error: error.message });
   }
 };
 //============================================================================================================
@@ -36,4 +37,3 @@ export const deleteCustomer = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-

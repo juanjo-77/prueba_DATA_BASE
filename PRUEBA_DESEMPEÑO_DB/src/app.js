@@ -6,7 +6,6 @@ import saleRoutes from './routes/sale.routes.js';
 import productRoutes from './routes/product.routes.js';
 import supplierRoutes from './routes/supplier.routes.js';
 import customerRoutes from './routes/customer.routes.js';
-import reportRoutes from './routes/report.routes.js'; 
 
 //declaramos app que sera el que maneje todas las rutas
 const app = express();
